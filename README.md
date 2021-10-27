@@ -11,7 +11,6 @@ docker-compose rm -s && docker-compose up --build -d
 docker stop $(docker ps -a -q)
 docker-compose down
 
-
 composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition:2.4.3 . --prefer-dist --no-interaction
 php bin/magento setup:install --base-url="http://localhost:8010/" --db-host="mariadb" --db-name=cbd_source --db-user=root --db-password=password --admin-firstname="Rakesh" --admin-lastname="Jangir" --admin-email="rakesh.jangir@ftxinfotech.com" --admin-user="admin" --admin-password="Admin@123_4" --use-rewrites="1" --backend-frontname="admin" --db-prefix=mage_ --elasticsearch-host=elasticsearch --elasticsearch-port=9200
 
