@@ -1,0 +1,44 @@
+version: "3"
+
+services:
+  app:
+    image: "${APP_NAME}_app"
+    container_name: "${APP_NAME}_container"
+    build:
+      context: ./docker/app
+      dockerfile: Dockerfile
+      args:
+        - NODE_VERSION=10.20.0
+        - COMPOSER_VERSION=2.0.12
+        - APP_NAME=$APP_NAME
+    ports:
+      - $APP_PORT_NUMBER:80
+    volumes:
+      - ./:/var/www/html/    
+  mariadb:
+    container_name: "${APP_NAME}_mariadb"
+    image: mariadb:10.4-focal
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=$DB_PWD
+    volumes:
+      - 'mariadb_10_4:/var/lib/mysql'
+  phpmyadmin:
+    container_name: "${APP_NAME}_phpmyadmin"
+    image: phpmyadmin
+    restart: always
+    ports:
+      - $DB_PORT_NUMBER:80
+    environment:
+      - PMA_HOST=mariadb
+  elasticsearch:
+    container_name: "${APP_NAME}_elasticsearch"
+    image: elasticsearch:7.9.3
+    restart: always
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      - discovery.type=single-node
+volumes:
+  mariadb_10_4:
